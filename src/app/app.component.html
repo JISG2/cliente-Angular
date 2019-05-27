@@ -1,21 +1,128 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<div class="container">
+  <table class="table table-bordered" style="text-align: center; margin-top: 20px;">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Cantidad de Vida</th>
+          <th scope="col">Carril</th>
+          <th scope="col">Cantidad de daño inicial</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let campeon of campeones">
+          <td>{{campeon.nombre}} </td>
+          <td>{{campeon.cantVida}}</td>
+          <td>{{campeon.carril}} </td>
+          <td>{{campeon.cantDamageI}}</td>
+          <td><button (click)="eliminarCampeon(campeon.id)" class="btn btn-danger" style="margin-right: 10px;">Eliminar</button><button (click)="updateChamp(campeon)" class="btn btn-success">Actualizar</button></td>
+        </tr>
+    </tbody>
+  </table>
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+
+<div class="container" *ngIf="!isEdit">
+  <label>Agregar campeon</label> 
+  <form [formGroup]="campeon" class="example-form">
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+            <label>Nombre de campeon</label>
+            <input type="text" class="form-control"   placeholder="Introduzca nombre del campeón" formControlName="nombre">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+            <label>Cantidad de vida: </label>
+            <input type="text" class="form-control"   placeholder="Cantidad de vida" formControlName="cantVida">
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+            <label>Cantidad de armadura: </label>
+            <input type="text" class="form-control"  placeholder="Cantidad de armadura" formControlName="cantArmadura">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+            <label>Cantidad de resitencia magica:</label>
+            <input type="text" class="form-control"  placeholder="Cantidad de resistencia mágica" formControlName="cantMR">
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <div class="form-group">
+          <label>Carril:</label>
+          <input type="text" class="form-control"  placeholder="Carril" formControlName="carril">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+            <label>Daño inicial:</label>
+            <input type="text" class="form-control"  placeholder="Daño inicial" formControlName="cantDamageI">
+        </div>
+      </div>
+    </div>
+        <button (click)="agregarCampeon()"  class="btn btn-primary" style="margin-left: 450px;">Agregar campeon</button>
+  </form>
+</div>
+<br>
+
+<div class="container" *ngIf="isEdit">
+    <label>Actualizar campeon</label> 
+  <form [formGroup]="updateCampeon" class="example-form">
+    <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+              <label>Nombre de campeon</label>
+              <input type="text" class="form-control"   placeholder="Introduzca nombre del campeón" formControlName="nombre">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+              <label>Cantidad de vida: </label>
+              <input type="text" class="form-control"   placeholder="Cantidad de vida" formControlName="cantVida">
+          </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+              <label>Cantidad de armadura: </label>
+              <input type="text" class="form-control"  placeholder="Cantidad de armadura" formControlName="cantArmadura">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+              <label>Cantidad de resitencia magica:</label>
+              <input type="text" class="form-control"  placeholder="Cantidad de resistencia mágica" formControlName="cantMR">
+          </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col">
+          <div class="form-group">
+            <label>Carril:</label>
+            <input type="text" class="form-control"  placeholder="Carril" formControlName="carril">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+              <label>Daño inicial:</label>
+              <input type="text" class="form-control"  placeholder="Daño inicial" formControlName="cantDamageI">
+          </div>
+        </div>
+    </div>
+      <button (click)="actualizarCampeon()" class="btn btn-success" style="margin-left: 450px;">Update campeon</button>
+  </form>
+</div>
+<br>
+
+
 
 <router-outlet></router-outlet>

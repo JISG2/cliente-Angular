@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+  web:
+    build: .
+    command: ng serve
+    volumes:
+      - .:/app
+    ports:
+      - "4200:4200"
